@@ -1,4 +1,4 @@
-# rudransh_glowbmo_application
+# Globmo Question's Solution
 
 Solution of Glowbmo questioms, created a login screen and grid view screen with delete operation of grids
 
