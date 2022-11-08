@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "645697281533",
+    "project_id": "globmo-application-by-rudransh",
+    "storage_bucket": "globmo-application-by-rudransh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645697281533:android:7d6c554e20b803452a0d94",
+        "android_client_info": {
+          "package_name": "com.rudransh.rudransh_glowbmo_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645697281533-1qnbq97nme5nnkh9umr7u9rqekhc5bm3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rudransh.rudransh_glowbmo_application",
+            "certificate_hash": "a06209f4eaddff43d02578e5e90a7baee8e29226"
+          }
+        },
+        {
+          "client_id": "645697281533-id139i0k6n9t3vq3459k0g2moks4l507.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgQLfLxmd7Zg3XSjvRbPXpN5aU196SwZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645697281533-id139i0k6n9t3vq3459k0g2moks4l507.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
