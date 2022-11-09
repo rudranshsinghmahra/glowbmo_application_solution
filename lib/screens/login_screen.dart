@@ -1,6 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:rudransh_glowbmo_application/screens/sign_up_screen.dart';
-
+import '../services/firebase_services.dart';
 import 'grid_view_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,6 +12,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseServices firebaseServices = FirebaseServices();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: TextFormField(
+                      controller: emailController,
                       cursorColor: Colors.transparent,
                       cursorWidth: 0,
                       style: const TextStyle(color: Colors.white, fontSize: 15),
@@ -131,8 +137,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: TextFormField(
+                      controller: passwordController,
                       cursorColor: Colors.transparent,
                       cursorWidth: 0,
+                      obscureText: true,
                       style: const TextStyle(color: Colors.white, fontSize: 15),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -170,10 +178,42 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               child: NeumorphicButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GridViewScreen()));
+                  if (emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty) {
+                    firebaseServices
+                        .signInWithEmail(emailController.text.trim(),
+                            passwordController.text.trim())
+                        .then(
+                          (value) => {
+                            if (value?.user?.uid != null)
+                              {
+                                emailController.clear(),
+                                passwordController.clear(),
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GridViewScreen(),
+                                  ),
+                                )
+                              }
+                            else
+                              {
+                                showToast('Invalid Credentials!',
+                                    context: context,
+                                    animation: StyledToastAnimation.scale,
+                                    borderRadius: BorderRadius.circular(20)),
+                              }
+                          },
+                        );
+                  } else {
+                    showToast(
+                      "Enter valid email and password",
+                      context: context,
+                      animation: StyledToastAnimation.scale,
+                      borderRadius: BorderRadius.circular(20),
+                    );
+                  }
                 },
                 child: const Padding(
                   padding:

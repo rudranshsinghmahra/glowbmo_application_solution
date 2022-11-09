@@ -1,5 +1,8 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:rudransh_glowbmo_application/screens/grid_view_screen.dart';
 import 'package:rudransh_glowbmo_application/screens/login_screen.dart';
+import 'package:rudransh_glowbmo_application/services/firebase_services.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -9,6 +12,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  FirebaseServices firebaseServices = FirebaseServices();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: TextFormField(
+                      controller: emailController,
                       cursorColor: Colors.transparent,
                       cursorWidth: 0,
                       style: const TextStyle(color: Colors.white, fontSize: 15),
@@ -129,8 +136,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: TextFormField(
+                      controller: passwordController,
                       cursorColor: Colors.transparent,
                       cursorWidth: 0,
+                      obscureText: true,
                       style: const TextStyle(color: Colors.white, fontSize: 15),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -167,7 +176,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               child: NeumorphicButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty) {
+                    firebaseServices
+                        .signUpUserWithEmail(emailController.text.trim(),
+                            passwordController.text.trim())
+                        .then(
+                          (value) => {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const GridViewScreen(),
+                              ),
+                            )
+                          },
+                        );
+                  } else {
+                    showToast(
+                      "Enter valid email and password",
+                      context: context,
+                      animation: StyledToastAnimation.scale,
+                      borderRadius: BorderRadius.circular(20),
+                    );
+                  }
+                },
                 child: const Padding(
                   padding:
                       EdgeInsets.only(top: 2.0, bottom: 2.0, left: 8, right: 8),

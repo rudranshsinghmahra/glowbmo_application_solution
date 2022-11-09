@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:rudransh_glowbmo_application/screens/login_screen.dart';
 import 'package:rudransh_glowbmo_application/services/firebase_services.dart';
 
 class GridViewScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class GridViewScreen extends StatefulWidget {
 class _GridViewScreenState extends State<GridViewScreen> {
   FirebaseServices firebaseServices = FirebaseServices();
   TextEditingController gridNameController = TextEditingController();
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +25,31 @@ class _GridViewScreenState extends State<GridViewScreen> {
         elevation: 0,
         title: const Text("Grid View Screen"),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              FirebaseAuth.instance.signOut().then(
+                    (value) => {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      )
+                    },
+                  );
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 15.0),
+              child: Icon(Icons.logout),
+            ),
+          )
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: firebaseServices.myGrids.snapshots(),
+        stream: firebaseServices.myGrids
+            .where("userId", isEqualTo: user?.uid)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Center(child: Text('Something went wrong'));
@@ -75,10 +99,11 @@ class _GridViewScreenState extends State<GridViewScreen> {
                               TextField(
                                 controller: gridNameController,
                                 decoration: InputDecoration(
-                                    hintText: "Enter Grid Name",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(1))),
+                                  hintText: "Enter Grid Name",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(1),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -98,7 +123,7 @@ class _GridViewScreenState extends State<GridViewScreen> {
                             onPressed: () {
                               if (gridNameController.text.isNotEmpty) {
                                 firebaseServices
-                                    .addGridsToDatabase(
+                                    .addGridsToDatabase(user?.uid,
                                         gridNameController.text.trim())
                                     .then((value) => {
                                           gridNameController.clear(),
@@ -241,10 +266,13 @@ class _GridViewScreenState extends State<GridViewScreen> {
                                 TextField(
                                   controller: gridNameController,
                                   decoration: InputDecoration(
-                                      hintText: "Enter Grid Name",
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(1))),
+                                    hintText: "Enter Grid Name",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        1,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -265,23 +293,32 @@ class _GridViewScreenState extends State<GridViewScreen> {
                                 if (gridNameController.text.isNotEmpty) {
                                   firebaseServices
                                       .addGridsToDatabase(
-                                          gridNameController.text)
-                                      .then((value) => {
-                                            gridNameController.clear(),
-                                            Navigator.pop(context),
-                                            showToast('Grid Added Successfully',
-                                                context: context,
-                                                animation:
-                                                    StyledToastAnimation.scale,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                          });
+                                          user?.uid, gridNameController.text)
+                                      .then(
+                                        (value) => {
+                                          gridNameController.clear(),
+                                          Navigator.pop(context),
+                                          showToast(
+                                            'Grid Added Successfully',
+                                            context: context,
+                                            animation:
+                                                StyledToastAnimation.scale,
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
+                                        },
+                                      );
                                 } else {
                                   Navigator.pop(context);
-                                  showToast('Please enter a name for Grid',
-                                      context: context,
-                                      animation: StyledToastAnimation.scale,
-                                      borderRadius: BorderRadius.circular(20));
+                                  showToast(
+                                    'Please enter a name for Grid',
+                                    context: context,
+                                    animation: StyledToastAnimation.scale,
+                                    borderRadius: BorderRadius.circular(
+                                      20,
+                                    ),
+                                  );
                                 }
                               },
                               child: const Text(
