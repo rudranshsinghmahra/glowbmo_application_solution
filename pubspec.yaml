@@ -40,7 +40,6 @@ dependencies:
   firebase_auth:
   firebase_core:
   cloud_firestore:
-  flutter_colorpicker: ^1.0.3
   flutter_styled_toast:
 
 dev_dependencies:
