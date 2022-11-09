@@ -1,6 +1,8 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:rudransh_glowbmo_application/screens/sign_up_screen.dart';
 
+import 'grid_view_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -149,28 +151,56 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 20,
           ),
           Center(
+            child: Neumorphic(
+              style: const NeumorphicStyle(
+                intensity: 1,
+                depth: 5,
+                shadowLightColor: Color.fromARGB(
+                  255,
+                  40,
+                  46,
+                  80,
+                ),
+                shadowDarkColor: Color.fromARGB(
+                  255,
+                  16,
+                  18,
+                  33,
+                ),
+              ),
               child: NeumorphicButton(
-            child: const Padding(
-              padding:
-                  EdgeInsets.only(top: 2.0, bottom: 2.0, left: 8, right: 8),
-              child: Text(
-                "Login",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Color.fromARGB(255, 54, 54, 99),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const GridViewScreen()));
+                },
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(top: 2.0, bottom: 2.0, left: 8, right: 8),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color.fromARGB(255, 54, 54, 99),
+                    ),
+                  ),
                 ),
               ),
             ),
-          )),
-          SizedBox(
-            height: 5,
+          ),
+          const SizedBox(
+            height: 10,
           ),
           GestureDetector(
-            onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SignUpScreen()));
             },
-            child: Center(
+            child: const Center(
               child: Text(
                 "New User? SignUp",
                 style: TextStyle(color: Colors.white60),

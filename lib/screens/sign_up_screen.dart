@@ -149,30 +149,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
             height: 20,
           ),
           Center(
-            child: NeumorphicButton(
-              child: const Padding(
-                padding:
-                    EdgeInsets.only(top: 2.0, bottom: 2.0, left: 8, right: 8),
-                child: Text(
-                  "SignUp",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Color.fromARGB(255, 54, 54, 99),
+            child: Neumorphic(
+              style: const NeumorphicStyle(
+                intensity: 1,
+                depth: 5,
+                shadowLightColor: Color.fromARGB(
+                  255,
+                  40,
+                  46,
+                  80,
+                ),
+                shadowDarkColor: Color.fromARGB(
+                  255,
+                  16,
+                  18,
+                  33,
+                ),
+              ),
+              child: NeumorphicButton(
+                onPressed: () {},
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(top: 2.0, bottom: 2.0, left: 8, right: 8),
+                  child: Text(
+                    "SignUp",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color.fromARGB(255, 54, 54, 99),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-          SizedBox(
-            height: 5,
+          const SizedBox(
+            height: 10,
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
             },
-            child: Center(
+            child: const Center(
               child: Text(
                 "Already have account? Login",
                 style: TextStyle(color: Colors.white60),
